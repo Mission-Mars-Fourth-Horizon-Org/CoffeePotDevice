@@ -1,0 +1,567 @@
+﻿<Page
+    x:Class="CoffeePotDevice.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CoffeePotDevice.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:vm="using:CoffeePotDevice.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:t10="using:Template10.Controls"
+    RequestedTheme="Dark"
+    mc:Ignorable="d">
+
+  <Page.DataContext>
+    <vm:SettingsPageViewModel x:Name="ViewModel" />
+  </Page.DataContext>
+
+  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="94*" />
+        <RowDefinition Height="84*" />
+        <RowDefinition Height="449*"/>
+        <RowDefinition Height="93*" />
+      </Grid.RowDefinitions>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="15*" />
+        <ColumnDefinition Width="73*" />
+        <ColumnDefinition Width="12*" />
+      </Grid.ColumnDefinitions>
+
+      <Image x:Name="ImageFrame" 
+           Grid.Row="0" Grid.RowSpan="4"
+           Grid.Column="0" Grid.ColumnSpan="3"
+           Source="/Assets/Backgrounds/MissionMarsBackground16x9.jpg" 
+           IsHitTestVisible="False" 
+           HorizontalAlignment="Stretch" 
+           VerticalAlignment="Stretch" 
+           Stretch="Fill" />
+
+      <Grid x:Name="MainViewContent"
+          Grid.Row="1" Grid.Column="1"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch" Grid.RowSpan="2">
+
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="MainViewTitle" 
+                 Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                 Text="Coffee Pot Device Settings" 
+                 Style="{StaticResource MissionMarsPageHeadingTextBlock}" FontFamily="{StaticResource MissionMarsFont}" />
+
+
+        <Pivot x:Name="SettingsPagePivot"
+             Grid.Row="1"
+             SelectionChanged="SettingsPagePivot_SelectionChanged">
+
+          <PivotItem 
+          x:Name="SettingsPivotItem"
+          DataContext="{Binding SettingsPivotViewModel}"
+          Header="IoT Hub Settings">
+
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+              <TextBlock x:Name="SettingHeader" 
+                       Text="Setting" 
+                       FontSize="18" 
+                       Style="{StaticResource MissionMarsBodyTextBlock}" 
+                       FontWeight="Bold" 
+                       Grid.Row="0" Grid.Column="0" 
+                       HorizontalAlignment="Stretch" TextAlignment="Left" 
+                       Margin="10" />
+
+              <TextBlock x:Name="ValueHeader" 
+                       Text="Value" 
+                       FontSize="18" 
+                       Style="{StaticResource MissionMarsDataHeadingTextBlock}" 
+                       FontWeight="Bold" 
+                       Grid.Row="0" Grid.Column="1" 
+                       HorizontalAlignment="Stretch" 
+                       TextAlignment="Left" 
+                       Margin="10" />
+
+              <TextBlock x:Name="IoTHubManagementConnectionStringHeader"
+                 Grid.Row ="1" Grid.Column="0"
+                 Text="IoT Hub Management Connection String:"
+                 Margin="10"
+                 Style="{StaticResource MissionMarsDataHeadingTextBlock}" 
+                 VerticalAlignment="Center"/>
+
+              <TextBox x:Name="IoTHubManagementConnectionStringInput"
+                     Grid.Row="1" Grid.Column="1"
+                     Text="{Binding IoTHubManagementConnectionString, Mode=TwoWay}"
+                     Style="{StaticResource MissionMarsDataEntryTextBox}"/>
+
+              <TextBlock
+              Text='Quantum Entangled Coffee Pot Device Settings - Set from the "Manage Devices" page'
+              Style="{StaticResource MissionMarsDataHeadingTextBlock}"
+              Margin="10"
+              HorizontalAlignment="Stretch" TextAlignment="Center"
+              Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+
+              <TextBlock x:Name="CoffePotDeviceIdHeader"
+                 Grid.Row ="3" Grid.Column="0"
+                 Text="Coffee Pot Device Id:"
+                 Margin="10"
+                 Style="{StaticResource MissionMarsDataHeadingTextBlock}" 
+                 VerticalAlignment="Center"/>
+
+              <TextBlock 
+              x:Name="CoffeePotDeviceId"
+              Text="{Binding CoffePotDeviceId, Mode=OneWay}"
+              Grid.Row="3" Grid.Column="1"
+              Margin="10"
+              VerticalAlignment="Center"
+              Style="{StaticResource MissionMarsDataDetailTextBlock}"/>
+
+              <TextBlock x:Name="CoffePotDeviceConnectionStringHeader"
+                 Grid.Row ="4" Grid.Column="0"
+                 Text="Coffee Pot Device Connection String:"
+                 TextWrapping="Wrap"
+                 Margin="10"
+                 Style="{StaticResource MissionMarsDataHeadingTextBlock}" 
+                 VerticalAlignment="Center"/>
+
+              <TextBlock 
+              x:Name="CoffeePotDeviceConnectionString"
+              Text="{Binding CoffePotDeviceConnectionString, Mode=OneWay}"
+              Grid.Row="4" Grid.Column="1"
+              Margin="10"
+              VerticalAlignment="Center"
+              TextWrapping="Wrap"
+              Style="{StaticResource MissionMarsDataDetailTextBlock}"/>
+            </Grid>
+
+
+          </PivotItem>
+
+          <PivotItem 
+          x:Name="DevicesPivotItem"
+          DataContext="{Binding DevicesPivotViewModel}" 
+          Header="Manage Devices" >
+
+            <Grid>
+
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+
+              <StackPanel x:Name="DeviceButtonsPanel"
+                        Grid.Row="0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+
+                <Button x:Name="ListDevicesButton" 
+                      Content="Get Devices" 
+                      Command="{Binding GetDevicesCommand}"
+                      Style="{StaticResource MissionMarsButton}" />
+
+                <Button x:Name="EntangleDeviceButton"
+                      Content="Entangle Device"
+                      Margin="50,0"
+                      Command="{Binding EntangleDeviceCommand}"
+                      Style="{StaticResource MissionMarsButton}" />
+
+                <Button x:Name="CreateDeviceButton" 
+                      Content="Create Device" 
+                      Command="{Binding OpenCreateDeviceDialogCommand}"
+                      CommandParameter="coffeepot-"
+                      Style="{StaticResource MissionMarsButton}"/>
+
+                <Button x:Name="UpdateDeviceButton" 
+                      Content="Update Device" 
+                      Command="{Binding OpenUpdateDeviceDialogCommand}"
+                      CommandParameter=""
+                      Style="{StaticResource MissionMarsButton}" />
+
+                <Button x:Name="DeleteDeviceButton" 
+                      Content="Delete Device" 
+                      Command="{Binding DeleteDeviceFromRegistryCommand}"
+                      Style="{StaticResource MissionMarsButton}" />
+
+              </StackPanel>
+
+              <Grid Grid.Row="1">
+
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="1*" />
+                  <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock 
+                x:Name="DevicesListLabel"
+                Grid.Row="0" Grid.Column="0"
+                Text="Device List:" 
+                Style="{StaticResource MissionMarsBlockHeadingTextBlock}" />
+
+                <TextBlock 
+                x:Name="DeviceDetailLabel"
+                Grid.Row="0" Grid.Column="1"
+                Text="Selected Device Details:" 
+                Style="{StaticResource MissionMarsBlockHeadingTextBlock}" />
+
+                <ListView x:Name="DevicesListView" 
+                      Grid.Row="1" Grid.Column="0"
+                      Margin="0,10"
+                      ItemsSource="{Binding Devices, Mode=TwoWay}"
+                      SelectedItem="{Binding SelectedDevice, Mode=TwoWay}">
+                  <ListView.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock 
+                    Text="{Binding Id}" 
+                    TextWrapping="Wrap"
+                    Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+                    </DataTemplate>
+                  </ListView.ItemTemplate>
+                </ListView>
+
+                <Grid 
+                x:Name="DeviceDetailGrid"
+                Grid.Row="1" Grid.Column="1"
+                DataContext="{Binding SelectedDevice, Mode=TwoWay}">
+
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                  </Grid.RowDefinitions>
+
+                  <TextBlock 
+                  Text="Device Id:" 
+                  Grid.Row="0" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding Id}" 
+                  Grid.Row="0" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+
+                  <TextBlock 
+                  Text="State:" 
+                  Grid.Row="1" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding State}" 
+                  Grid.Row="1" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                  <TextBlock 
+                  Text="Primary Key:" 
+                  Grid.Row="2" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding PrimaryKey}" 
+                  Grid.Row="2" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                  <TextBlock 
+                  Text="Secondary Key:" 
+                  Grid.Row="3" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding SecondaryKey}" 
+                  Grid.Row="3" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                  <TextBlock 
+                  Text="Primary Thumb Print:" 
+                  Grid.Row="4" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding PrimaryThumbPrint}" 
+                  Grid.Row="4" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                  <TextBlock 
+                  Text="Secondary Thumb Print:" 
+                  Grid.Row="5" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding SecondaryThumbPrint}" 
+                  Grid.Row="5" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                  <TextBlock 
+                  Text="Connection State:" 
+                  Grid.Row="6" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding ConnectionState}" 
+                  Grid.Row="6" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                  <TextBlock 
+                  Text="Last Activity:" 
+                  Grid.Row="7" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding LastActivityTime}" 
+                  Grid.Row="7" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                  <TextBlock 
+                  Text="Last Connection State Update:" 
+                  Grid.Row="8" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding LastConnectionStateUpdatedTime}" 
+                  Grid.Row="8" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                  <TextBlock 
+                  Text="Last State Update:" 
+                  Grid.Row="9" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding LastStateUpdatedTime}" 
+                  Grid.Row="9" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                  <TextBlock 
+                  Text="Message Count:" 
+                  Grid.Row="10" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding MessageCount}" 
+                  Grid.Row="10" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+                  <TextBlock 
+                  Text="Suspension Reason:" 
+                  Grid.Row="11" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding SuspensionReason}" 
+                  Grid.Row="11" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                  <TextBlock 
+                  Text="Connection String:" 
+                  Grid.Row="12" Grid.Column="0"
+                  Style="{StaticResource MissionMarsDataHeadingTextBlock}" />
+
+                  <TextBlock 
+                  Text="{Binding ConnectionString}" 
+                  TextWrapping="Wrap"
+                  Grid.Row="12" Grid.Column="1"
+                  Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+
+                </Grid>
+
+              </Grid>
+
+              <!-- Device Dialog Goes Here -->
+              <Popup
+              x:Name="DeviceDialog"
+              Grid.Row="2"
+              IsOpen="{Binding IsDeviceDialogOpen}"
+              Width="850" Height="300"
+              HorizontalAlignment="Center" 
+              VerticalAlignment="Center">
+                <Border BorderBrush="{StaticResource MissionMarsBodyFontBrush}" 
+                Background="Black"
+                BorderThickness="2" 
+                Width="850" Height="300">
+                  <Grid>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="1*" />
+                      <RowDefinition Height="1*" />
+                      <RowDefinition Height="1*" />
+                      <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                      Text="{Binding DeviceDialogTitle, TargetNullValue='Page Heading', Mode=OneWay}" 
+                      Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                      Margin="10"
+                      Style="{StaticResource MissionMarsPageHeadingTextBlock}"/>
+
+                    <TextBlock
+                      Text="Device Id:"
+                      Grid.Row="1" Grid.Column="0"
+                      Style="{StaticResource MissionMarsDataHeadingTextBlock}"
+                      HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                    <TextBox 
+                      Text="{Binding EditDevice.Id, Mode=TwoWay}"
+                      IsEnabled="{Binding IsCreateDialog, Mode=OneWay}"
+                      Style="{StaticResource MissionMarsDataEntryTextBox}"
+                      Grid.Row="1" Grid.Column="1" />
+
+                    <Button
+                    Content="Generate ID"
+                    Grid.Row="1" Grid.Column="3"
+                    HorizontalAlignment="Left"
+                    Command="{Binding GenerateDeviceIdCommand}"
+                    Style="{StaticResource MissionMarsButton}" />
+
+                    <TextBlock
+                      Text="Primary Key:"
+                      Grid.Row="2" Grid.Column="0"
+                      Style="{StaticResource MissionMarsDataHeadingTextBlock}"
+                      HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                    <TextBox 
+                      Text="{Binding EditDevice.PrimaryKey, Mode=TwoWay}"
+                      Style="{StaticResource MissionMarsDataEntryTextBox}"
+                      Grid.Row="2" Grid.Column="1" />
+
+                    <Button 
+                      Content="Generate Key"
+                      Grid.Row="2" Grid.Column="3"
+                      Command="{Binding GenerateDeviceKey}"
+                      CommandParameter="PrimaryKey"
+                      HorizontalAlignment="Left"
+                      Style="{StaticResource MissionMarsButton}" />
+
+                    <TextBlock
+                      Text="Secondary Key:"
+                      Grid.Row="3" Grid.Column="0"
+                      Style="{StaticResource MissionMarsDataHeadingTextBlock}"
+                      HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                    <TextBox 
+                      Text="{Binding EditDevice.SecondaryKey, Mode=TwoWay}"
+                      Style="{StaticResource MissionMarsDataEntryTextBox}"
+                      Grid.Row="3" Grid.Column="1" />
+
+                    <Button 
+                      Content="Generate Key"
+                      Grid.Row="3" Grid.Column="3"
+                      Command="{Binding GenerateDeviceKey}"
+                      CommandParameter="SecondaryKey"
+                      HorizontalAlignment="Left"
+                      Style="{StaticResource MissionMarsButton}" />
+
+                    <StackPanel
+                      Orientation="Horizontal"
+                      Grid.Row="4" Grid.Column="1"
+                      HorizontalAlignment="Center">
+
+                      <Button
+                      Content="Save"
+                      Command="{Binding SaveDeviceToRegistryCommand}"
+                      Style="{StaticResource MissionMarsButton}" />
+
+                      <Button
+                      Content="Cancel"
+                      Command="{Binding CancelDeviceEditCommand}"
+                      Style="{StaticResource MissionMarsButton}" />
+
+                    </StackPanel>
+
+                  </Grid>
+                </Border>
+              </Popup>
+
+            </Grid>
+          </PivotItem>
+
+        </Pivot>
+
+        <StackPanel 
+        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+        Orientation="Horizontal" 
+        HorizontalAlignment="Center" 
+        VerticalAlignment="Bottom">
+
+          <!--<Button
+          x:Name="GoHome"
+          Content="home"
+          Command="{Binding NavigateCommand}"
+          CommandParameter="CoffeePotDevice.Views.MainPage"
+          Style="{StaticResource MissionMarsButton}"/>-->
+
+        </StackPanel>
+
+      </Grid>
+
+    </Grid>
+
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="19*" />
+        <RowDefinition Height="16*" />
+        <RowDefinition Height="325*" />
+      </Grid.RowDefinitions>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="78*" />
+        <ColumnDefinition Width="26*" />
+        <ColumnDefinition Width="1096*" />
+        <ColumnDefinition Width="26*" />
+        <ColumnDefinition Width="55*" />
+      </Grid.ColumnDefinitions>
+      
+      <Button
+          x:Name="GoHome"
+          Grid.Row="1" Grid.Column="1"
+          Margin="0"
+          Background="Transparent"
+          BorderBrush="Transparent"
+          Foreground="#FFCCCCCC"
+          Command="{Binding NavigateCommand}"
+          CommandParameter="CoffeePotDevice.Views.MainPage"
+          Style="{StaticResource HomeButtonStyle}" />
+
+    </Grid>
+
+
+  </Grid>
+</Page>

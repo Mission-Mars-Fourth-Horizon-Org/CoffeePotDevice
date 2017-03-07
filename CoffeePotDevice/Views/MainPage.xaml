@@ -1,0 +1,237 @@
+<Page x:Class="CoffeePotDevice.Views.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:CoffeePotDevice.Views"
+      xmlns:triggers="using:CoffeePotDevice.Triggers"
+      xmlns:models="using:CoffeePotDevice.Models"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="using:CoffeePotDevice.ViewModels"
+      RequestedTheme="Dark"
+      mc:Ignorable="d">
+
+  <Page.DataContext>
+    <vm:MainPageViewModel x:Name="ViewModel" />
+  </Page.DataContext>
+
+  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <VisualStateManager.VisualStateGroups>
+
+      <VisualStateGroup >
+        <VisualState x:Name="BigState">
+          <VisualState.StateTriggers>
+            <triggers:EqualsStateTrigger Left="{Binding FullScreenState}">
+              <triggers:EqualsStateTrigger.Right>
+                <models:FullScreenStates>Expanded</models:FullScreenStates>
+              </triggers:EqualsStateTrigger.Right>
+            </triggers:EqualsStateTrigger>
+          </VisualState.StateTriggers>
+          <VisualState.Setters>
+            <Setter Target="ExitFullScreenButton.Visibility" Value="Visible" />
+          </VisualState.Setters>
+        </VisualState>
+        <VisualState x:Name="SmallState">
+          <VisualState.StateTriggers>
+            <triggers:EqualsStateTrigger Left="{Binding FullScreenState}">
+              <triggers:EqualsStateTrigger.Right>
+                <models:FullScreenStates>Collapsed</models:FullScreenStates>
+              </triggers:EqualsStateTrigger.Right>
+            </triggers:EqualsStateTrigger>
+          </VisualState.StateTriggers>
+          <VisualState.Setters>
+            <Setter Target="GoFullScreenButton.Visibility" Value="Visible" />
+          </VisualState.Setters>
+        </VisualState>
+      </VisualStateGroup>
+
+    </VisualStateManager.VisualStateGroups>
+
+
+    <Grid >
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="13*" />
+        <RowDefinition Height="74*" />
+        <RowDefinition Height="13*" />
+      </Grid.RowDefinitions>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="15*" />
+        <ColumnDefinition Width="73*" />
+        <ColumnDefinition Width="12*" />
+      </Grid.ColumnDefinitions>
+
+      <Image x:Name="ImageFrame" 
+           Grid.Row="0" Grid.RowSpan="3"
+           Grid.Column="0" Grid.ColumnSpan="3"
+           Source="/Assets/Backgrounds/MissionMarsBackground16x9.jpg" 
+           IsHitTestVisible="False" 
+           HorizontalAlignment="Stretch" 
+           VerticalAlignment="Stretch" 
+           Stretch="Fill" />
+
+      <Grid x:Name="MainViewContent"
+          Grid.Row="1" Grid.Column="1"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel
+        Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+
+          <TextBlock x:Name="MainViewTitle" 
+                 Text="Coffee Pot Device Quantum Entangled Twin" 
+                 Style="{StaticResource MissionMarsPageHeadingTextBlock}" />
+
+          <TextBlock x:Name="DeviceId" 
+                 Text="{Binding DeviceId, Mode=OneWay}" 
+                 Style="{StaticResource MissionMarsPageHeadingTextBlock}" />
+
+        </StackPanel>
+
+        <TextBlock 
+        x:Name="MessagesReceivedLabel" 
+        Text="Messages Received:" 
+        Grid.Row="1" Grid.Column="0"  
+        Margin="10,30,10,10" 
+        Style="{StaticResource MissionMarsBlockHeadingTextBlock}" />
+
+        <TextBlock 
+        x:Name="MessagesSentLabel" 
+        Text="Messages Sent:" 
+        Grid.Row="1" Grid.Column="1"  
+        Margin="10,30,10,10" 
+        Style="{StaticResource MissionMarsBlockHeadingTextBlock}" />
+
+        <ListView x:Name="MessagesReceivedListView" ItemsSource="{Binding MessagesReceived, Mode=OneWay}" Grid.Row="2" Grid.Column="0" Margin="10" >
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <TextBlock 
+              Text="{Binding}"  
+              Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+
+        <ListView x:Name="MessagesSentListView" ItemsSource="{Binding MessagesSent, Mode=OneWay}" FontSize="18" Grid.Row="2" Grid.Column="1" Margin="10">
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <TextBlock 
+              Text="{Binding}"  
+              Style="{StaticResource MissionMarsDataDetailTextBlock}" />
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+
+        <StackPanel 
+        Visibility="Collapsed"
+        Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+        Orientation="Horizontal" 
+        HorizontalAlignment="Center" 
+        VerticalAlignment="Bottom">
+          <Button 
+          x:Name="PlayPic"
+          Content="pic" 
+          Command="{Binding PlaySoundCommand}" 
+          CommandParameter="pictake01.wav"
+          Style="{StaticResource MissionMarsButton}"/>
+          <Button
+          x:Name="PlayVoice"
+          Content="voice"
+          Command="{Binding PlaySoundCommand}"
+          CommandParameter="alienvoice01.wav"
+          Style="{StaticResource MissionMarsButton}"/>
+          <Button
+          x:Name="PlayBase"
+          Content="base"
+          Command="{Binding PlaySoundCommand}"
+          CommandParameter="allyourbase.wav"
+          Style="{StaticResource MissionMarsButton}"/>
+          <!--<Button
+          x:Name="GoToSettings"
+          Content="settings"
+          Command="{Binding NavigateCommand}"
+          CommandParameter="CoffeePotDevice.Views.SettingsPage"
+          Style="{StaticResource MissionMarsButton}"/>-->
+
+        </StackPanel>
+
+      </Grid>
+
+    </Grid>
+
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="19*" />
+        <RowDefinition Height="16*" />
+        <RowDefinition Height="325*" />
+      </Grid.RowDefinitions>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="78*" />
+        <ColumnDefinition Width="26*" />
+        <ColumnDefinition Width="1096*" />
+        <ColumnDefinition Width="26*" />
+        <ColumnDefinition Width="55*" />
+      </Grid.ColumnDefinitions>
+
+      <Button
+          x:Name="GoToSettings"
+          Grid.Row="1" Grid.Column="1"
+          Margin="0"
+          Background="Transparent"
+          BorderBrush="Transparent"
+          Foreground="#FFCCCCCC"
+          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+          Command="{Binding NavigateCommand}"
+          CommandParameter="CoffeePotDevice.Views.SettingsPage"
+          Style="{StaticResource SettingsButtonStyle}">
+      </Button>
+
+      <Button
+          x:Name="GoFullScreenButton"
+          Content="FS"
+          Grid.Row="1" Grid.Column="3"
+          Margin="0"
+          Background="Transparent"
+          BorderBrush="Transparent"
+          Foreground="#FFCCCCCC"
+          Visibility="Collapsed"
+          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+          Command="{Binding ToggleFullScreenCommand}"
+          Style="{StaticResource FullScreenButtonStyle}">
+      </Button>
+
+      <Button
+          x:Name="ExitFullScreenButton"
+          Content="FS"
+          Grid.Row="1" Grid.Column="3"
+          Margin="0"
+          Background="Transparent"
+          BorderBrush="Transparent"
+          Foreground="#FFCCCCCC"
+          Visibility="Collapsed"
+          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+          Command="{Binding ToggleFullScreenCommand}"
+          Style="{StaticResource RestoreScreenButtonStyle}">
+      </Button>      
+      
+    </Grid>
+  </Grid>
+</Page>
+
