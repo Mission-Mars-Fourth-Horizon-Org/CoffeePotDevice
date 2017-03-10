@@ -18,8 +18,10 @@ To configure the IoT Hub used by the CoffeePotDevice as well as to run the Coffe
 ## Tasks
 
 1. [Prepare the Azure IoT Hub needed by the app](#prep)
-1. [Capture the details of the IoT Hub and Device](#details)
+1. [Make the coffeeclient Connection String available to attendees](#coffeeclient)
 1. [Run and configure the CoffeePotDevice UWP App](#run)
+1. [Testing the CoffeePotDevice app with Device Explorer and IoT Hub Explorer](#testing)
+1. [Prepare the Team Cards](#teamcards)
 
 ---
 
@@ -40,7 +42,7 @@ For this to all work you need to create the following items in ***your*** azure 
 To help you in this effort, A PowerShell script that uses the "Azure CLI 2.0" cross platform cli has been created to provision all of the required resources. Use these steps to run the script:
 
 1. Clone this repo down to your computer (wherever and however you choose)
-1. Open a ***PowerShell*** prompt and change into the `/scripts` directory in the repo.
+1. Open a ***PowerShell*** prompt and change into the `/Scripts` directory in the repo.
 1. Login to the azure cli and ensure that the desired subscription is current (Read <a target="_blank" href="https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli">Log in with Azure CLI 2.0</a> for more details):
 
     ```bash
@@ -122,9 +124,9 @@ To help you in this effort, A PowerShell script that uses the "Azure CLI 2.0" cr
 
 ---
 
-<a name="details"></a>
+<a name="coffeeclient"></a>
 
-## Capture the details of the IoT Hub and Device
+## Make the coffeeclient Connection String available to attendees
 
 You will need to capture a few details from the resources you provisioned above.
 
@@ -144,10 +146,37 @@ You will need to capture a few details from the resources you provisioned above.
     ./ShowMarsIoTHub.ps1 -g marsgroupsea -n marsiotsea
     ```
 
-1. First locate the `iothubowner` connection string and copy it's value out to a text file for your use.
+1. Locate the `coffeeclient` connection strings from the output of the script, and copy the "`HostName=marsiotsea...;SharedAccessKeyName=coffeeclient;SharedAccessKey=1E...7E=`" connection
 
-1. Copy the 'cofeeclient' connection string, and put it in a public document that attendees can link to for use during the event. 
+    For example, from the output above, locate the "**coffeeclient**" connection string in the details and copy it to a text file.
 
+    ```bash
+    ================================================================================
+    marsiotsea IoT Hub coffeeclient connection string - Used by attendees
+    --------------------------------------------------------------------------------
+    HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=coffeeclient;SharedAccessKey=1EmQKhYMBdamoriZZM7JNcWSUoEngRlypAdX4Eghc7E=
+    ```
+
+1. Save the text file to a folder in OneDrive:
+
+    ![Save CoffeeClient Text File to OneDrive](images/SaveCoffeeClientTextFileToOneDrive.png)
+
+1. Right click on the new file in the OneDrive folder, and select "**Share a OneDrivelink**":
+
+    ![Get OneDrive Link](images/GetCoffeeClientTextFileOneDriveLink.png)
+
+1. Use the URL Shortner of your choice and create an easy to type short URL for the text file:
+
+    > **Note**: Use any URL shortner you like.
+
+    ![URL Shortner](images/CoffeeClientTextFileShortUrl.png)
+
+
+1. Edit the deck for your event, and paste your short URL in on the instruction slide for the IoT Hub mission.  Attendees will need easy access to the text file the URL points to so they can copy the cofeeclient connection string in the lab.
+
+    ![Short URL In Deck](images/PutShortUrlInSlideDeck.png)
+
+1. Keep the short URL handy during the event so you can easily share it with attendees when they need it.  Attendees will get to the portion of the lab where the connection string is needed at widely different times depending how quickly they progress through the lab.
 
 ---
 
@@ -155,14 +184,73 @@ You will need to capture a few details from the resources you provisioned above.
 
 ## Run and configure the CoffeePotDevice UWP App
 
-1. Open the CofeePotDevice app in Visual Studio, ensure the target platform is x86 and the target device is "Local Machine"
-1. Run it
-1. Click on the "Gear" icon in the top left corner
-1. On the "Iot Hub Settings" tab, paste the `iothubowner` connection string you copied above in.
-1. Switch to the "Devices" tab
-1. Click the "Get Devices" button
-1. Click the "coffeepot" device in th list to select it
-1. Click the "Entangle Device" button to have the app simulate the "coffeepot" device.
+1. From this repo, open the "CoffeePotDevice/CoffeePotDevice.sln" solution in Visual Studio 2013 Community or later.
+
+1. From the Debug toolbar, make sure the target platform is "x86" and the target device is "Local Machine", and start the app:
+
+    ![CoffeePot Targets](images/CoffeePotTargets.png)
+
+1. Click on the "Gear" icon in the top left corner to go to the app's settings
+
+    ![Settings Icon](images/SettingsIcon.png)
+
+
+1. On the "Iot Hub Settings" tab, paste the `iothubowner` connection string returned from the `/Scripts/PrepareMarsIoTHub.ps1` script you ran earlier.  If you no longer have that, from a PowerShell prompt, in this repo's `/Scripts` folder, run `.\ShowMarsIoTHub.ps1 -g <resource-group-name> -n <iot-hub-name>` where `<resource-group-name>` is the name of the resource group you used above, and `<iot-hub-name>` is the name of the iot hub you used above.  Find the 'iothubowner` connection string, copy it's value and paste it into the "**IoT Hub Management Connection String" box in the CoffeePotDevice app:
+
+    ```bash
+    ================================================================================
+    marsiotsea IoT Hub iothubowner connection string - Used by presenters
+    --------------------------------------------------------------------------------
+    HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=XFoYt5f3xI2ebGxRVpWCfua2++CH+1KIrP5RjRQp6ts=
+     ```
+
+    ![IoT Hub Settings](images/IoTHubConnectionString.png)
+
+1. Switch to the "**Manage Devices**" tab, and click the "**Get Devices**" button:
+
+    ![Get Devices](images/GetDevices.png)
+
+1. You should see the "**coffeepot**" device that was created by the `/Scripts/PrepareMarsIoTHub.ps1` earlier.  Select the "**coffeepot**" device from the list, and click the "**Entangle Device**" button:
+
+    > **Note**: The "**Entangle Device**" button is just saving the device ID and key that the CoffeePotDevice app will use when simulating the coffee pot.  Make sure that whatever device you select here, the attendees are targeting that same device in their code.
+
+    ![Entangle coffeepot](images/EntangleCoffeePotDevice.png)
+
+
 1. Click the "Home" icon in the top left corner to return to the main screen
+
+    ![Home Icon](images/HomeIcon.png)
+    
 1. Leave the app up and running througout the event so attendees can see their messages pop up.
 1. The app has to be in the foreground to run and have the sounds associated with the messages be heard.
+
+
+---
+
+<a name="testing"></a>
+
+## Testing the CoffeePotDevice app with Device Explorer and IoT Hub Explorer
+
+
+---
+
+<a name="teamcards"></a>
+
+## Prepare the Team Cards
+
+The attendees need to know the team name or number they are so they can use the correct event hub consumer group when reading devices from the iot hub. The "teamxx" consumer groups were created on the iot hub during of the `PrepareMarsIoTHub.ps1` script execution above.
+
+1. Download the two PDF files from the repo:
+
+    - [TeamCards1to10.pdf](TeamCards/TeamCards1to10.pdf)
+    - [TeamCards11to20.pdf](TeamCards/TeamCards11to20.pdf)
+
+    ![Team Cards Pages](images/TeamCardsPages.png)
+
+1. Print the pages out, and cut out the individual cards to distribute to the teams during the event.  
+
+    ![Team01 Card Sample](TeamCards/cardsample.png)
+
+1. Make sure that attendees form into ***NO MORE*** than twenty teams, and that they modify the code in the "ReadDeviceToCloudMessages" program to use the "teamxx" consumer group as documented in the Mission Briefing.
+
+
