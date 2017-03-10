@@ -20,8 +20,9 @@ To configure the IoT Hub used by the CoffeePotDevice as well as to run the Coffe
 1. [Prepare the Azure IoT Hub needed by the app](#prep)
 1. [Make the coffeeclient Connection String available to attendees](#coffeeclient)
 1. [Run and configure the CoffeePotDevice UWP App](#run)
-1. [Testing the CoffeePotDevice app with Device Explorer and IoT Hub Explorer](#testing)
+1. [Testing the CoffeePotDevice app with Device Explorer](#testing)
 1. [Prepare the Team Cards](#teamcards)
+1. [Clean up after the event](#cleanup)
 
 ---
 
@@ -231,7 +232,7 @@ You will need to capture a few details from the resources you provisioned above.
 
 <a name="testing"></a>
 
-## Testing the CoffeePotDevice app with Device Explorer and IoT Hub Explorer
+## Testing the CoffeePotDevice app with Device Explorer
 
 You can test the CoffeePotDevice app a number of ways.  
 
@@ -239,7 +240,7 @@ You can test the CoffeePotDevice app a number of ways.
 
 - You can use the "Device Explorer" tool from the SDK on Windows.
 
-- You can use the iothub-explorer Node.js command line tool.  
+- You can use the iothub-explorer Node.js command line tool. (Not documented here because I was fighting with how to pass the JSON command along from the command line)
 
 ### Testing with Device Explorer
 
@@ -321,5 +322,30 @@ The attendees need to know the team name or number they are so they can use the 
     ![Team01 Card Sample](TeamCards/cardsample.png)
 
 1. Make sure that attendees form into ***NO MORE*** than twenty teams, and that they modify the code in the "ReadDeviceToCloudMessages" program to use the "teamxx" consumer group as documented in the Mission Briefing.
+
+---
+
+<a name="cleanup"></a>
+
+## Clean up after the event
+
+Once the event is over you do not need to retain the Azure IoT Hub. The SKU used (S1) by the script currently costs $50/month to run.  No problem for a day or two, but could start to impact your available credits on a long term basis.
+
+To clean up your Azure IoT Hub it's surprisingly simple.
+
+1. From a command prompt where the "Azure CLI 2.0" is in the path run:
+
+    > **Note**: You could of course also just log in to the portal and delete the resource group from there.
+
+    ```bash
+    az group delete <resource-group-name>
+    ```
+
+    For example, with our `marsgroupsea` name from above:
+
+    ```bash
+    az group delete marsgroupsea
+    ```
+
 
 
