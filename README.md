@@ -79,70 +79,45 @@ To help you in this effort, A PowerShell script that uses the "Azure CLI 2.0" cr
 
     ```bash
     ================================================================================
-    Configuration Complete - Showing Details
+    Showing Details
     ================================================================================
 
 
+    ================================================================================
+    marsiotsea IoT Hub Details
     --------------------------------------------------------------------------------
-    marsiotsea IoT Hub Details ...
-    --------------------------------------------------------------------------------
-    {
-    "etag": "AAAAAAC40Sw=",
-    "id": 
+    Location    Name        ResourceGroup    Resourcegroup    Subscriptionid
+    ----------  ----------  ---------------  ---------------  ------------------------------------
+    westus      marsiotsea  marsgroupsea     marsgroupsea     ed2f73c5-c021-4b86-9afb-aa7998d16085
 
+
+    ================================================================================
+    marsiotsea IoT Hub consumer groups
+    --------------------------------------------------------------------------------
+    $Default
+    team01
+    team02
+    team03
     ...
-    
-    }
+    team20
 
 
+    ================================================================================
+    marsiotsea IoT Hub iothubowner connection string - Used by presenters
     --------------------------------------------------------------------------------
-    marsiotsea IoT Hub consumer groups...
+    HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=XFoYt5f3xI2ebGxRVpWCfua2++CH+1KIrP5RjRQp6ts=
+
+
+    ================================================================================
+    marsiotsea IoT Hub coffeeclient connection string - Used by attendees
     --------------------------------------------------------------------------------
-    [
-    "$Default",
-    "team01",
-    "team02",
-
-    ...
-
-    "team20"
-    ]
+    HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=coffeeclient;SharedAccessKey=1EmQKhYMBdamoriZZM7JNcWSUoEngRlypAdX4Eghc7E=
 
 
+    ================================================================================
+    coffeepot device connection string
     --------------------------------------------------------------------------------
-    marsiotsea IoT Hub iothubowner connection string - Used by presenters in the CoffeePotDeviceApp...
-    --------------------------------------------------------------------------------
-    {
-    "connectionString": "HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=XFoYt5f3xI2
-    ebGxRVpWCfua2++CH+1KIrP5RjRQp6ts="
-    }
-
-
-    --------------------------------------------------------------------------------
-    marsiotsea IoT Hub coffeeclient connection string - Used by attendees...
-    --------------------------------------------------------------------------------
-    {
-    "connectionString": "HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=coffeeclient;SharedAccessKey=1EmQKhYMBd
-    amoriZZM7JNcWSUoEngRlypAdX4Eghc7E="
-    }
-
-
-    --------------------------------------------------------------------------------
-    coffeepot device details and connection string...
-    --------------------------------------------------------------------------------
-    {
-    "authentication": {
-        "symmetricKey": {
-        "primaryKey": "wC4gm+mXqc0UA2eOhG+vLaYijX/zXL7w85gw003TmTk=",
-        "secondaryKey": "Q7hIneStwmFMPmKyxj6xIqovpiXWSdaxbyiMpKJ2THk="
-        },
-
-    ...
-
-    "deviceId": "coffeepot",
-    ...
-
-    }
+    HostName=marsiotsea.azure-devices.net;DeviceId=coffeepot;SharedAccessKey=wC4gm+mXqc0UA2eOhG+vLaYijX/zXL7w85gw003TmTk=
     ```
 
 ---
