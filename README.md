@@ -13,7 +13,8 @@ To configure the IoT Hub used by the CoffeePotDevice as well as to run the Coffe
 - Windows 10 - The CoffeePotDevice app is a UWP app.  At this time, no cross-platform version of the app exists
 - PowerShell - The "PrepareMarsIoTHub.ps1" script helps you provision the Azure resources needed by the app.
 - Azure-CLI 2.0 (<a target="_blank" href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Install Docs</a>) - This is used by the "PrepareMarsIoTHub.ps1" script to create the resources in Azure.
-- Visual Studio 2015 Community Edition or Later - Used to load the CoffeePotDevice app source code and run it. 
+- Visual Studio 2015 Community Edition or Later - Used to load the CoffeePotDevice app source code and run it.
+- Device Explorer (Optional) - Follow the instructions to install it on the <a target="_blank" href="https://github.com/Azure/azure-iot-sdk-csharp/tree/master/tools/DeviceExplorer">How to use Device Explorer for IoT Hub devices</a> page
 
 ## Tasks
 
@@ -30,15 +31,15 @@ To configure the IoT Hub used by the CoffeePotDevice as well as to run the Coffe
 
 ## Prepare the Azure IoT Hub needed by the app
 
-You need to configure an IoT Hub and device in Azure that the CoffeePotDevice app will connect to.  Once attendees have complete the tutorial walkthroughs, they will modify they code they have written to also point to this hub, via a Consumer Group that maps to their "teamxx" number and communicate with the CoffeePotDevice App.
+You need to configure an IoT Hub and device in Azure that the CoffeePotDevice app will connect to.  Once attendees have complete the tutorial walkthroughs, they will modify they code they have written to  point to the hub you create below rather then the one they created in the lab, via a Consumer Group that maps to their "teamxx" number and communicate with the "coffeepot" device simulated by the "CoffeePotDevice" app.
 
 For this to all work you need to create the following items in ***your*** azure subscription:
 
 - An Azure Resource Group
 - An Azure IoT Hub
-- A "coffeeclient" SAS Policy in the hub with "ServiceConnect" permissions that the attendees will use to connect to your hub. 
+- A "coffeeclient" SAS Policy in the hub with "ServiceConnect" permissions that the attendees will use to connect to your hub.
 - A "coffeepot" device identity that the CoffeePotDevice app will connect as
-- A "teamxx" consumer group on the "events" endpoint for "team01"-"team20" that the attendess will use to listen for messages coming back from the CoffeePotDevice simulated app. 
+- A "teamxx" consumer group on the "events" endpoint for "team01"-"team20" that the attendess will use to listen for messages coming back from the CoffeePotDevice simulated app.
 
 To help you in this effort, A PowerShell script that uses the "Azure CLI 2.0" cross platform cli has been created to provision all of the required resources. Use these steps to run the script:
 
@@ -50,7 +51,7 @@ To help you in this effort, A PowerShell script that uses the "Azure CLI 2.0" cr
     az login
     ```
 
-    Then uses these commands to list, set and show your account info
+    Then use these commands to list, set and show your account info
 
     ```bash
     az account list
@@ -58,7 +59,7 @@ To help you in this effort, A PowerShell script that uses the "Azure CLI 2.0" cr
     az account show
     ```
 
-1. Decide on a name for the Resource Group and IoT Hub you will create an the Location where you want them. It's suggested that you use a name that includes "mars" to keep in theme with the event.  Perpahs appending your city name, airport code, etc. to help keep it unique. For example, if yuo were configuring the resources for an event in Seattle you might use  the `sea` airport code in your names:
+1. Decide on a name for the Resource Group and IoT Hub you will create an the Location where you want them. It's suggested that you use a name that includes "mars" to keep in theme with the event.  Perhaps appending your city name, airport code, etc. to help keep it unique. For example, if you were configuring the resources for an event in Seattle you might use  the `sea` airport code in your names:
 
     - Resource Group Name: **`marsgroupsea`**
     - IoT Hub Name: **`marsiotsea`**
@@ -196,7 +197,9 @@ You will need to capture a few details from the resources you provisioned above.
     ![Settings Icon](images/SettingsIcon.png)
 
 
-1. On the "Iot Hub Settings" tab, paste the `iothubowner` connection string returned from the `/Scripts/PrepareMarsIoTHub.ps1` script you ran earlier.  If you no longer have that, from a PowerShell prompt, in this repo's `/Scripts` folder, run `.\ShowMarsIoTHub.ps1 -g <resource-group-name> -n <iot-hub-name>` where `<resource-group-name>` is the name of the resource group you used above, and `<iot-hub-name>` is the name of the iot hub you used above.  Find the 'iothubowner` connection string, copy it's value and paste it into the "**IoT Hub Management Connection String" box in the CoffeePotDevice app:
+1. On the "Iot Hub Settings" tab, paste the `iothubowner` connection string returned from the `/Scripts/PrepareMarsIoTHub.ps1` script you ran earlier:
+
+    > **Note**: Recall that you can use the `/Scripts/ShowMarsIoTHub.ps1` script as mentioned above to retrieve your values if you no longer have them.
 
     ```bash
     ================================================================================
@@ -246,7 +249,7 @@ You can test the CoffeePotDevice app a number of ways.
 
 1. Install the Device Explorer using the instructions on the <a target="_blank" href="https://github.com/Azure/azure-iot-sdk-csharp/tree/master/tools/DeviceExplorer">How to use Device Explorer for IoT Hub devices</a> page.
 
-1. Run "**Device Explorer**" on your Windows Computer and on the "**Configuration**" tab, paste the `iothubowner` connection string from above into the "**IoT Hub Connection String" box.  Then click the "**Update**" button, and then "**Ok**" to confirm the settings where updated.
+1. Run "**Device Explorer**" on your Windows Computer and on the "**Configuration**" tab, paste the `iothubowner` connection string from above into the "**IoT Hub Connection String**" box.  Then click the "**Update**" button, and then "**Ok**" to confirm the settings where updated.
 
     ![Device Explorer Configuration](images/DeviceExplorerConnectionInfo.png)
 
