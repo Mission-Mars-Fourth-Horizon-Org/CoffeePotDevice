@@ -220,10 +220,12 @@ You will need to capture a few details from the resources you provisioned above.
 1. Click the "Home" icon in the top left corner to return to the main screen
 
     ![Home Icon](images/HomeIcon.png)
-    
-1. Leave the app up and running througout the event so attendees can see their messages pop up.
-1. The app has to be in the foreground to run and have the sounds associated with the messages be heard.
 
+1. You can toggle the app between Full Screen and Windowed mode using the full screen toggle button in the top right corner:
+
+    ![Full Screen Toggle](images/FullScreenToggle.png)
+
+1. Leave the app up and running througout the event so attendees can see their messages pop up. The app has to be in the foreground to run and have the sounds associated with the messages be heard.
 
 ---
 
@@ -231,6 +233,73 @@ You will need to capture a few details from the resources you provisioned above.
 
 ## Testing the CoffeePotDevice app with Device Explorer and IoT Hub Explorer
 
+You can test the CoffeePotDevice app a number of ways.  
+
+- You could of course just complete the same lab steps that attendees are instructed to do in the <a target="_blank" href="https://github.com/Mission-Mars-Fourth-Horizon-Org/Mission-Briefings/tree/master/IoTHubs">IoT Hubs Mission Briefing</a>.  You should do this at LEAST once for both .NET and Node.js as you prepare for the event.
+
+- You can use the "Device Explorer" tool from the SDK on Windows.
+
+- You can use the iothub-explorer Node.js command line tool.  
+
+### Testing with Device Explorer
+
+1. Install the Device Explorer using the instructions on the <a target="_blank" href="https://github.com/Azure/azure-iot-sdk-csharp/tree/master/tools/DeviceExplorer">How to use Device Explorer for IoT Hub devices</a> page.
+
+1. Run "**Device Explorer**" on your Windows Computer and on the "**Configuration**" tab, paste the `iothubowner` connection string from above into the "**IoT Hub Connection String" box.  Then click the "**Update**" button, and then "**Ok**" to confirm the settings where updated.
+
+    ![Device Explorer Configuration](images/DeviceExplorerConnectionInfo.png)
+
+1. Switch to the "**Messages To Device**" tab, select the "**coffeepot**" device, and in the "**Message**" box, paste a valid command string as documented in the lab.  Finally, click the "**Send**" button:
+
+    > **Note**: ***DO NOT CHECK THE "Add Time Stamp" CHECKBOX***.  This will prepend a date/time stamp to the string that is sent to the device, and will invalidate the message.
+
+    ```json
+    {"Command":"Ping","Team":"team01","Parameters":"Hello, Mars!"}
+    ```
+
+    ![Ping Coffee Pot](images/DeviceExplorerPingCoffeePot.png)
+
+1. Back on the CoffeePotDevice app, you should see your ping message on the screen, as well as it's response.  In addition, you should have heard a distinctive "Ping" sound when the app recieved the message:
+
+    > **Note**:  ***IF YOU DID NOT HEAR THE SOUND*** ensure that the CoffeePotDevice app was visible on the screen when you sent the message from the "Device Explorer"
+
+    ![Ping Display](images/PingInApp.png)
+
+1. Back in "**Device Explorer**" edit the command to send "Brew" instead, listen for the resulting sound and view the result in the app:
+
+    > **Note**: The most recent messages are displayed at the ***top*** of the list in the CoffeePotDevice app.
+
+    ```json
+    {"Command":"Brew","Team":"team01","Parameters":"Hello, Mars!"}
+    ```
+
+    ![Brew Command](images/BrewCommandInDeviceExplorer.png)
+
+    ![Brew in App](images/BrewInApp.png)
+
+1. Next, try a command that has the right format, but isn't "Ping" or "Brew" (the only valid commands) and the listen for, and view the response:
+
+    ```json
+    {"Command":"Oops","Team":"team01","Parameters":"Hello, Mars!"}
+    ```
+
+    ![Oops Command](images/OopsMessageInDeviceExplorer.png)
+
+    ![Oops in App](images/OopsMessageInApp.png)
+
+1. How about a command that doesn't meet the JSON format expected  byt he CoffeePotDevice app:
+
+    ```json
+    Oops
+    ```
+
+    ![Malformed in Device Explorer](images/MalformedOopsInDeviceExplorer.png)
+
+    ![Malformed in App](images/MalformedOopsInApp.png)
+
+1. Finally, you can monitor the responses from the CoffeePotDevice App in the "**Device Explorer**" as shown below:
+
+    ![Monitor Responses](images/MonitorResponsesInDeviceExplorer.png)
 
 ---
 
