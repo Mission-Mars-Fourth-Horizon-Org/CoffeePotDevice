@@ -150,7 +150,7 @@ You will need to capture a few details from the resources you provisioned above.
 
 1. Locate the `coffeeclient` connection strings from the output of the script, and copy the "`HostName=marsiotsea...;SharedAccessKeyName=coffeeclient;SharedAccessKey=1E...7E=`" connection
 
-    For example, from the output above, locate the "**coffeeclient**" connection string in the details and copy it to a text file.
+    For example, from the output above, locate the "**coffeeclient**" connection string in the details and copy it to a text file.  ***Make sure the entire connection string is on a single line.  If it was wrapped in the output of the script above, fix it in the text file so it is all one line.***
 
     ```bash
     ================================================================================
@@ -197,7 +197,7 @@ You will need to capture a few details from the resources you provisioned above.
     ![Settings Icon](images/SettingsIcon.png)
 
 
-1. On the "Iot Hub Settings" tab, paste the `iothubowner` connection string returned from the `/Scripts/PrepareMarsIoTHub.ps1` script you ran earlier:
+1. On the "Iot Hub Settings" tab, paste the `iothubowner` connection string returned from the `/Scripts/PrepareMarsIoTHub.ps1` script you ran earlier. ***Make sure the entire connection string is on a single line.  If it was wrapped in the output of the script above, fix it in the text file so it is all one line.***:
 
     > **Note**: Recall that you can use the `/Scripts/ShowMarsIoTHub.ps1` script as mentioned above to retrieve your values if you no longer have them.
 
