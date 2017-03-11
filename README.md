@@ -186,7 +186,7 @@ You will need to capture a few details from the resources you provisioned above.
 
 ## Run and configure the CoffeePotDevice UWP App
 
-1. From this repo, open the "CoffeePotDevice/CoffeePotDevice.sln" solution in Visual Studio 2013 Community or later.
+1. From this repo, open the "CoffeePotDevice/CoffeePotDevice.sln" solution in Visual Studio 2015 Community or later.
 
 1. From the Debug toolbar, make sure the target platform is "x86" and the target device is "Local Machine", and start the app:
 
@@ -336,18 +336,18 @@ Once the event is over you do not need to retain the Azure IoT Hub. The SKU used
 
 To clean up your Azure IoT Hub it's surprisingly simple.
 
-1. From a command prompt where the "Azure CLI 2.0" is in the path run:
+1. From a command prompt where the "Azure CLI 2.0" is in the path run the following command, and enter `y` to confirm the operation:
 
     > **Note**: You could of course also just log in to the portal and delete the resource group from there.
 
     ```bash
-    az group delete <resource-group-name>
+    az group delete --name <resource-group-name>
     ```
 
     For example, with our `marsgroupsea` name from above:
 
     ```bash
-    az group delete marsgroupsea
+    az group delete --name marsgroupsea
     ```
 
 
