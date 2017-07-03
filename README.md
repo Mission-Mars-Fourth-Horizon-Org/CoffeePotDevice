@@ -10,9 +10,8 @@ As a presenter, there are a few steps you'll have to do to prepare the CoffePotD
 
 To configure the IoT Hub used by the CoffeePotDevice as well as to run the CoffeePotDevice app you will need the following
 
+- An active Azure Subscription
 - Windows 10 - The CoffeePotDevice app is a UWP app.  At this time, no cross-platform version of the app exists
-- PowerShell - The "PrepareMarsIoTHub.ps1" script helps you provision the Azure resources needed by the app.
-- Azure-CLI 2.0 (<a target="_blank" href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Install Docs</a>) - This is used by the "PrepareMarsIoTHub.ps1" script to create the resources in Azure.
 - Visual Studio 2015 Community Edition or Later - Used to load the CoffeePotDevice app source code and run it.
 - Device Explorer (Optional) - Follow the instructions to install it on the <a target="_blank" href="https://github.com/Azure/azure-iot-sdk-csharp/tree/master/tools/DeviceExplorer">How to use Device Explorer for IoT Hub devices</a> page
 
@@ -41,23 +40,31 @@ For this to all work you need to create the following items in ***your*** azure 
 - A "coffeepot" device identity that the CoffeePotDevice app will connect as
 - A "teamxx" consumer group on the "events" endpoint for "team01"-"team20" that the attendess will use to listen for messages coming back from the CoffeePotDevice simulated app.
 
-To help you in this effort, A PowerShell script that uses the "Azure CLI 2.0" cross platform cli has been created to provision all of the required resources. Use these steps to run the script:
+To help you in this effort, a Bash shell script that uses the "Azure CLI 2.0" cross platform cli has been created to provision all of the required resources. Use these steps to run the script using the Azure Cloud Shell:
 
-1. Clone this repo down to your computer (wherever and however you choose)
-1. Open a ***PowerShell*** prompt and change into the `/Scripts` directory in the repo.
-1. Login to the azure cli and ensure that the desired subscription is current (Read <a target="_blank" href="https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli">Log in with Azure CLI 2.0</a> for more details):
+1. Login to the [Azure Portal](https://portal.azure.com) with the credentials for the subscription you wish to use, then click on the "Cloud Shell" icon along the top to open the Cloud Shell, and ensure that the "**Bash**" shell is selected.  You can also optionally click the button to expand the Cloud Shell window to make it easier to work with commands.
+
+    | **Note**: The "**Azure Cloud Shell**" is a virtual shell environment integrated into the Azure Portal.  It makes it very easy to open a shell environment with the current Azure CLI tools already installed and authenticated against your subscription.  You can learn more about the Azure Cloud Shell here: [Overview of Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview)
+
+    ![Open Cloud Bash Shell](images/OpenCloudShell.png)
+
+    Also, if this is the first time you've opened the Cloud Shell for your subscription you may be prompted to create the storage account that backs your "**clouddrive**" share. If so, click the "**Create storage**" button to continue:
+
+    ![Create Storage](images/CreateCloudStorageIfNeeded.png)
+
+1. Next, download the scripts to help you provision your IoT Hub, consumer groups, device and coffeeclient SAS policy to your clouddrive share in the Cloud shell by running the following commands in the Cloud Shell environment:
+
+    | **Note**: If you copy the code below to your clipboard, you can use "**SHIFT-INSERT**" to paste the code into your Cloud Shell terminal.  
 
     ```bash
-    az login
+    cd ~/clouddrive
+    mkdir missionmars
+    cd missionmars
+    wget https://raw.githubusercontent.com/Mission-Mars-Fourth-Horizon-Org/CoffeePotDevice/master/Scripts/prepareMarsIoTHub.sh
+    wget https://raw.githubusercontent.com/Mission-Mars-Fourth-Horizon-Org/CoffeePotDevice/master/Scripts/showMarsIoTHub.sh
     ```
 
-    Then use these commands to list, set and show your account info
-
-    ```bash
-    az account list
-    az account set
-    az account show
-    ```
+    ![Download Scripts](images/DownloadScripts.png)
 
 1. Decide on a name for the Resource Group and IoT Hub you will create an the Location where you want them. It's suggested that you use a name that includes "mars" to keep in theme with the event.  Perhaps appending your city name, airport code, etc. to help keep it unique. For example, if you were configuring the resources for an event in Seattle you might use  the `sea` airport code in your names:
 
@@ -65,18 +72,18 @@ To help you in this effort, A PowerShell script that uses the "Azure CLI 2.0" cr
     - IoT Hub Name: **`marsiotsea`**
     - Location: **`westus`** (Since Seattle is on the West Coast of the US)
 
-1. Use the names and locations chosen above to run the `./Scripts/PepareMarsIoTHub.ps1` script.  The script will take a few minutes (5-ish) to complete. Creating the IoT Hub and Consumer Groups take up most of the time:
+1. Use the names and locations chosen above to run the `~/clouddrive/missionmars/pepareMarsIoTHub.sh` script.  The script will take a few minutes (5-ish) to complete. Creating the IoT Hub and Consumer Groups take up most of the time:
 
-    > **Note**: When executing the `PrepareMarsIoTHub.ps1` script you must prefix it with the "**`./`**" current directory reference for PowerShell to properly locate it.
+    > **Note**: Ensure that the cloud shell is in the `~/clouddrive/missionmars/` directory and when you run the `./prepareMarsIoTHub.sh` script make sure to include the `./` prefix so that the bash Cloud Shell can locate it properly.
 
     ```bash
-    ./PrepareMarsIoTHub.ps1 -g <resourece-group-name> -n <iot-hub-name> -l <location>
+    ./prepareMarsIoTHub.sh -g <resourece-group-name> -n <iot-hub-name> -l <location>
     ```
 
     For example using the names we chose above:
 
     ```bash
-    ./PrepareMarsIoTHub.ps1 -g marsgroupsea -n marsiotsea -l westus
+    ./prepareMarsIoTHub.sh -g marsgroupsea -n marsiotsea -l westus
     ```
 
 1. When the script is done executing, the details of the resources created are shown at end (there are a lot of them so you will need to scroll).  Keep these resources up on the screen so you can use them in the next step:
@@ -136,16 +143,16 @@ You will need to capture a few details from the resources you provisioned above.
 - the "coffeecleint" connection string for attendees to use in the lab.
 - The "cofeepot" device id.  It should be "coffeepot" but you need to confirm it.
 
-1. If you accidentally cleared the output from the step above, you can retrieve the details of the resources you provisioned above using the `./Scripts/ShowMarsIoTHub.ps1` script.  Just make sure to use the same resource group name and iot hub name as above:
+1. If you accidentally cleared the output from the step above, you can retrieve the details of the resources you provisioned above using the `~/clouddrive/missionmars/showMarsIoTHub.sh` script.  Just make sure to use the same resource group name and iot hub name as above:
 
     ```bash
-    ./ShowMarsIoTHub.ps1 -g <resource-group-name> -n <iot-hub-name>
+    ./showMarsIoTHub.sh -g <resource-group-name> -n <iot-hub-name>
     ```
 
     Again, using our "Seattle" values from above:
 
     ```bash
-    ./ShowMarsIoTHub.ps1 -g marsgroupsea -n marsiotsea
+    ./showMarsIoTHub.sh -g marsgroupsea -n marsiotsea
     ```
 
 1. Locate the `coffeeclient` connection strings from the output of the script, and copy the "`HostName=marsiotsea...;SharedAccessKeyName=coffeeclient;SharedAccessKey=1E...7E=`" connection
