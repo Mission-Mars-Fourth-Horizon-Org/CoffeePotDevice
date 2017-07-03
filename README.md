@@ -21,6 +21,7 @@ To configure the IoT Hub used by the CoffeePotDevice as well as to run the Coffe
 1. [Make the coffeeclient Connection String available to attendees](#coffeeclient)
 1. [Run and configure the CoffeePotDevice UWP App](#run)
 1. [Testing the CoffeePotDevice app with Device Explorer](#testing)
+1. [Testing with the supplied .net or node.js CoffeeClient code](#testingcode)
 1. [Prepare the Team Cards](#teamcards)
 1. [Clean up after the event](#cleanup)
 
@@ -321,6 +322,14 @@ You can test the CoffeePotDevice app a number of ways.
 1. Finally, you can monitor the responses from the CoffeePotDevice App in the "**Device Explorer**" as shown below:
 
     ![Monitor Responses](images/MonitorResponsesInDeviceExplorer.png)
+
+---
+
+<a name="testingcode"></a>
+
+## Testing with the supplied .net or node.js CoffeeClient code
+
+This repo contains working versions of the .NET and Node.js code attendees create to recieve device to cloud messages and send cloud to device messages.  The code to create a device as well as for the simulated device is not supplied here because it isn't used for the coffee pot portion of the lab.
 
 ---
 
