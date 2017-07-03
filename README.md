@@ -62,6 +62,7 @@ To help you in this effort, a Bash shell script that uses the "Azure CLI 2.0" cr
     cd missionmars
     wget https://raw.githubusercontent.com/Mission-Mars-Fourth-Horizon-Org/CoffeePotDevice/master/Scripts/prepareMarsIoTHub.sh
     wget https://raw.githubusercontent.com/Mission-Mars-Fourth-Horizon-Org/CoffeePotDevice/master/Scripts/showMarsIoTHub.sh
+    
     ```
 
     ![Download Scripts](images/DownloadScripts.png)
