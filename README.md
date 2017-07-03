@@ -52,6 +52,7 @@ To help you in this effort, a Bash shell script that uses the "Azure CLI 2.0" cr
 
     ![Create Storage](images/CreateCloudStorageIfNeeded.png)
 
+
 1. Next, download the scripts to help you provision your IoT Hub, consumer groups, device and coffeeclient SAS policy to your clouddrive share in the Cloud shell by running the following commands in the Cloud Shell environment:
 
     | **Note**: If you copy the code below to your clipboard, you can use "**SHIFT-INSERT**" to paste the code into your Cloud Shell terminal.  
@@ -62,7 +63,7 @@ To help you in this effort, a Bash shell script that uses the "Azure CLI 2.0" cr
     cd missionmars
     wget https://raw.githubusercontent.com/Mission-Mars-Fourth-Horizon-Org/CoffeePotDevice/master/Scripts/prepareMarsIoTHub.sh
     wget https://raw.githubusercontent.com/Mission-Mars-Fourth-Horizon-Org/CoffeePotDevice/master/Scripts/showMarsIoTHub.sh
-    
+
     ```
 
     ![Download Scripts](images/DownloadScripts.png)
@@ -75,16 +76,16 @@ To help you in this effort, a Bash shell script that uses the "Azure CLI 2.0" cr
 
 1. Use the names and locations chosen above to run the `~/clouddrive/missionmars/pepareMarsIoTHub.sh` script.  The script will take a few minutes (5-ish) to complete. Creating the IoT Hub and Consumer Groups take up most of the time:
 
-    > **Note**: Ensure that the cloud shell is in the `~/clouddrive/missionmars/` directory and when you run the `./prepareMarsIoTHub.sh` script make sure to include the `./` prefix so that the bash Cloud Shell can locate it properly.
+    > **Note**: Use the full path to the script as given below, or if you are sure the "**Azure Cloud Shell**" terminal is currently in the `~/clouddrive/missionmars/` directory and when you can run the `./prepareMarsIoTHub.sh` path to run the script, just make sure to include the `./` prefix so that the bash Cloud Shell can locate it properly.
 
     ```bash
-    ./prepareMarsIoTHub.sh -g <resourece-group-name> -n <iot-hub-name> -l <location>
+    ~/clouddrive/missionmars/prepareMarsIoTHub.sh -g <resourece-group-name> -n <iot-hub-name> -l <location>
     ```
 
     For example using the names we chose above:
 
     ```bash
-    ./prepareMarsIoTHub.sh -g marsgroupsea -n marsiotsea -l westus
+    ~/clouddrive/missionmars/prepareMarsIoTHub.sh -g marsgroupsea -n marsiotsea -l westus
     ```
 
 1. When the script is done executing, the details of the resources created are shown at end (there are a lot of them so you will need to scroll).  Keep these resources up on the screen so you can use them in the next step:
@@ -144,21 +145,23 @@ You will need to capture a few details from the resources you provisioned above.
 - the "coffeecleint" connection string for attendees to use in the lab.
 - The "cofeepot" device id.  It should be "coffeepot" but you need to confirm it.
 
-1. If you accidentally cleared the output from the step above, you can retrieve the details of the resources you provisioned above using the `~/clouddrive/missionmars/showMarsIoTHub.sh` script.  Just make sure to use the same resource group name and iot hub name as above:
+1. If you accidentally cleared the output from the step above, you can retrieve the details of the resources you provisioned above using the `~/clouddrive/missionmars/showMarsIoTHub.sh` script in the "**Azure Cloud Shell**".  Just make sure to use the same resource group name and iot hub name as above:
 
     ```bash
-    ./showMarsIoTHub.sh -g <resource-group-name> -n <iot-hub-name>
+    ~/clouddrive/missionmars/showMarsIoTHub.sh -g <resource-group-name> -n <iot-hub-name>
     ```
 
     Again, using our "Seattle" values from above:
 
     ```bash
-    ./showMarsIoTHub.sh -g marsgroupsea -n marsiotsea
+    ~/clouddrive/missionmars/showMarsIoTHub.sh -g marsgroupsea -n marsiotsea
     ```
 
 1. Locate the `coffeeclient` connection strings from the output of the script, and copy the "`HostName=marsiotsea...;SharedAccessKeyName=coffeeclient;SharedAccessKey=1E...7E=`" connection
 
     For example, from the output above, locate the "**coffeeclient**" connection string in the details and copy it to a text file.  ***Make sure the entire connection string is on a single line.  If it was wrapped in the output of the script above, fix it in the text file so it is all one line.***
+
+    Also, when copying the output from the **Azure Cloud Shell**, use the **CTRL-INSERT** key combination instead of **CTRL-C** to copy the text.
 
     ```bash
     ================================================================================
@@ -194,7 +197,13 @@ You will need to capture a few details from the resources you provisioned above.
 
 ## Run and configure the CoffeePotDevice UWP App
 
-1. From this repo, open the "CoffeePotDevice/CoffeePotDevice.sln" solution in Visual Studio 2015 Community or later.
+1. Clone this repo to a path of your choosing on your local Windows 10 computer:
+
+    ```bash
+    git clone https://github.com/Mission-Mars-Fourth-Horizon-Org/CoffeePotDevice.git
+    ```
+
+1. From folder where the repo was cloned, open the "CoffeePotDevice/CoffeePotDevice.sln" solution in Visual Studio 2015 Community or later.
 
 1. From the Debug toolbar, make sure the target platform is "x86" and the target device is "Local Machine", and start the app:
 
@@ -205,9 +214,9 @@ You will need to capture a few details from the resources you provisioned above.
     ![Settings Icon](images/SettingsIcon.png)
 
 
-1. On the "Iot Hub Settings" tab, paste the `iothubowner` connection string returned from the `/Scripts/PrepareMarsIoTHub.ps1` script you ran earlier. ***Make sure the entire connection string is on a single line.  If it was wrapped in the output of the script above, edit it so it is all one line.***:
+1. On the "Iot Hub Settings" tab, paste the `iothubowner` connection string returned from the `prepareMarsIoTHub.sh` script you ran earlier. ***Make sure the entire connection string is on a single line.  If it was wrapped in the output of the script above, edit it so it is all one line.***:
 
-    > **Note**: Recall that you can use the `/Scripts/ShowMarsIoTHub.ps1` script as mentioned above to retrieve your values if you no longer have them.
+    > **Note**: Recall that you can use the `~/clouddrive/missionmars/showMarsIoTHub.sh` script in the "**Azure Cloud Shell**" as mentioned above to retrieve your values if you no longer have them.
 
     ```bash
     ================================================================================
@@ -222,7 +231,7 @@ You will need to capture a few details from the resources you provisioned above.
 
     ![Get Devices](images/GetDevices.png)
 
-1. You should see the "**coffeepot**" device that was created by the `/Scripts/PrepareMarsIoTHub.ps1` earlier.  Select the "**coffeepot**" device from the list, and click the "**Entangle Device**" button:
+1. You should see the "**coffeepot**" device that was created by the `prepareMarsIoTHub.sh` earlier.  Select the "**coffeepot**" device from the list, and click the "**Entangle Device**" button:
 
     > **Note**: The "**Entangle Device**" button is just saving the device ID and key that the CoffeePotDevice app will use when simulating the coffee pot.  Make sure that whatever device you select here, the attendees are targeting that same device in their code.
 
@@ -319,7 +328,7 @@ You can test the CoffeePotDevice app a number of ways.
 
 ## Prepare the Team Cards
 
-The attendees need to know the team name or number they are so they can use the correct event hub consumer group when reading devices from the iot hub. The "teamxx" consumer groups were created on the iot hub during of the `PrepareMarsIoTHub.ps1` script execution above.
+The attendees need to know the team name or number they are so they can use the correct event hub consumer group when reading devices from the iot hub. The "teamxx" consumer groups were created on the iot hub during of the `prepareMarsIoTHub.sh` script execution above.
 
 1. Download the two PDF files from the repo:
 
@@ -346,7 +355,7 @@ To clean up your Azure IoT Hub it's surprisingly simple.
 
 1. From a command prompt where the "Azure CLI 2.0" is in the path run the following command, and enter `y` to confirm the operation:
 
-    > **Note**: You could of course also just log in to the portal and delete the resource group from there.
+    > **Note**: You could of course also just log in to the portal and delete the resource group from there.  Also, sometimes there is an error after the `az group delete --name <resource-group-name>` command.  If you get one, first verify that you have the right name, and then run the command again.  It usually works the second time if it errored the first time.
 
     ```bash
     az group delete --name <resource-group-name>
