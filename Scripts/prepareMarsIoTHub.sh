@@ -49,12 +49,16 @@ az iot hub consumer-group create --resource-group "${g}" --hub-name "${n}" --eve
 az iot hub consumer-group create --resource-group "${g}" --hub-name "${n}" --event-hub-name events --name "team20"
 
 echo
-echo "Creating the 'coffeeclient' SAS Policy ..."
-az iot hub policy create --resource-group "${g}" --hub-name "${n}" --name "coffeeclient" --permissions ServiceConnect
-
-echo
 echo "Creating the 'coffeepot' device ..."
 az iot device create --resource-group "${g}" --hub-name "${n}" --device-id "coffeepot"
+
+echo
+echo "Creating the 'coffeeclient' SAS Policy ..."
+#az iot hub policy create --resource-group "${g}" --hub-name "${n}" --name "coffeeclient" --permissions ServiceConnect
+#bstateha - 170703 - temporarily using the old azure cli 1.0 and fixed keys to overcome a bug in the azure cli 2.0
+# that wipes out existing policies when adding a new one.  When the bug is fixed, I'll switch back to the azure cli 2.0
+# command above.
+azure iothub key create --resource-group "${g}" --name "${n}" --key-name "coffeeclient" --primary-key "rwKwYhCLhsuB1L6Hs8STUVf/EuSPBPQWmN5SjKGWvkg=" --secondary-key "D/DFrN6UGuuZn8CURwpfefaCQxjPX9GpvPwY4sMRxEQ=" --rights ServiceConnect
 
 echo
 echo
