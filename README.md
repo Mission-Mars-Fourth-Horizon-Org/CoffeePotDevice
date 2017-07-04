@@ -412,6 +412,19 @@ This repo contains working versions of the .NET and Node.js code attendees creat
     node .\ReadDeviceToCloudMessages.js
     ```
 
+    | **Note**: There seems to currently be a bug in the underlying amqp libraries that may  cause the program to crash immediately with the error shown below.  If this occurs, simply re-run it until it works.
+
+    ```bash
+    readdevicetocloudmessages/node_modules/amqp10/lib/frames.js:56
+        stream.write(buffer, callback);
+    ^
+
+    TypeError: Cannot read property 'write' of null
+    ...
+    ```
+
+
+
 1. Keeping the command prompt or terminal window with the "**ReadDeviceToCloudMessages.js**" program running in it openopen a second terminal window or command prompt window and navigate to the "**./CoffeeClient/node/sendcloudtodevicemessage**" folder.
 
 1. Open the "**./CoffeeClient/node/sendcloudtodevicemessage/SendCloudToDeviceMessage.js**" file in your editor, and locate the following line of code:
