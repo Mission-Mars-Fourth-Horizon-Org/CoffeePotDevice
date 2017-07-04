@@ -257,13 +257,15 @@ You will need to capture a few details from the resources you provisioned above.
 
 You can test the CoffeePotDevice app a number of ways.  
 
-- You could of course just complete the same lab steps that attendees are instructed to do in the <a target="_blank" href="https://github.com/Mission-Mars-Fourth-Horizon-Org/Mission-Briefings/tree/master/IoTHubs">IoT Hubs Mission Briefing</a>.  You should do this at LEAST once for both .NET and Node.js as you prepare for the event.
+- You could of course just complete the same lab steps that attendees are instructed to do in the <a target="_blank" href="https://github.com/Mission-Mars-Fourth-Horizon-Org/Mission-Briefings/tree/master/IoTHubs">IoT Hubs Mission Briefing</a>.  You should do this at LEAST once for both .NET and Node.js as you prepare for the event.  Completed versions of the .NET and Node.js code are provided in the [CoffeePotDevice](./CoffeePotDevice) folder in this project, and there are steps to walk you through testing with them below.
 
 - You can use the "Device Explorer" tool from the SDK on Windows.
 
 - You can use the iothub-explorer Node.js command line tool. (Not documented here because I was fighting with how to pass the JSON command along from the command line)
 
 ### Testing with Device Explorer
+
+The "**Device Explorer**" app from the Azure-IoT SDK provides an convenient set of tools to work with your IoT Hub, devices, and messaging.  It only works on Windows platforms however.
 
 1. Install the Device Explorer using the instructions on the <a target="_blank" href="https://github.com/Azure/azure-iot-sdk-csharp/tree/master/tools/DeviceExplorer">How to use Device Explorer for IoT Hub devices</a> page.
 
@@ -330,6 +332,116 @@ You can test the CoffeePotDevice app a number of ways.
 ## Testing with the supplied .net or node.js CoffeeClient code
 
 This repo contains working versions of the .NET and Node.js code attendees create to recieve device to cloud messages and send cloud to device messages.  The code to create a device as well as for the simulated device is not supplied here because it isn't used for the coffee pot portion of the lab.
+
+### Test the .NET version of the code
+
+1. From the directory where this repo was cloned, open the ./CoffeeClient/net/CoffeeClient.sln solution in Visual Studio 2015 Community edition or later.
+
+1. In the "**Solution Explorer**" window, expand the "**ReadDeviceToCloudMessages**" project, and then select the "**ReadDeviceToCloudMessages.cs**" to open it in the editor.  
+
+1. At the top of the "**ReadDeviceToCloudMessages.cs**" code file, locate the following line of code at the top of the `ReadDeviceToCloudMessages` class:
+
+    ```c#
+    static string connectionString = "paste-your-coffeeclient-connection-string-here";
+    ```
+
+1. Replace the `paste-your-coffeeclient-connection-string-here` place holder with the value for the coffeeclient connection string that was created during the `prepareMarsIoTHub.sh` script above.  For example, using the `coffeeclient` connection string for the `marsiotsea` iot hub above, we would change it to:
+
+    ```c#
+    static string connectionString = "HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=coffeeclient;SharedAccessKey=1EmQKhYMBdamoriZZM7JNcWSUoEngRlypAdX4Eghc7E=";
+    ```
+
+1. Repeate the process for "**SendCloudToDevice**" project's "**SendCloudToDevice.cs**" code file, by updating the line at the top of the `SendCloudToDevice` class that reads:
+
+    ```c#
+    static string connectionString = "paste-your-coffeeclient-connection-string-here";
+    ```
+
+1. Again, replace the `paste-your-coffeeclient-connection-string-here` place holder with your `coffeeclient` connection string created above.  Once again with our `marsiotsea` iot hub's `coffeeclient` connection string, it would change to:
+
+    ```c#
+        static string connectionString = "HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=coffeeclient;SharedAccessKey=1EmQKhYMBdamoriZZM7JNcWSUoEngRlypAdX4Eghc7E=";
+        ```
+
+1. Next, modify the solution's Startup Projects to start both the **ReadDeviceToCloudMessages** and "**SendCloudToDevice**" projects by right clicking on the "**CoffeePotClient**" solution in the "**Solution Explorer**" window, and selecting "**Set StartUp Projects...**" from the pop-up menu:
+
+    ![Set StartUp Projects](images/SetStartUpProjects.png)
+
+1. The in the "**Solution CoffeePotClient Property Pages**" window, choose:
+
+    - Multiple startup projects
+    - ReadeDeviceToCloudMessages - Start
+    - SendCloudToDevice - Start
+
+    ![Muultiple Startup Projects](/images/MultipleStartUpProjects.png)
+
+1. Finally, In the "**Soloution Explorer**", right-click on the "**CoffeePotClient**" solution and select "**Rebuild Solution**" from the pop-up menu to rebuild the solution.  Then click the "**Start**" button on the debug toolbar to launch the programs.
+
+    ![Rebuild and Debug Solution](images/RebuildAndDebugCoffeeClient.png)
+
+1. In the "**SendCloudToDevice.exe**" window press a key to send a message to the Coffee Pot, and view the response from the CoffeePot in the "**ReadDeviceToCloudMessages.exe**" and "**CoffeePotDevice**"
+
+    ![Test .NET CoffeePotClient](images/RunNetCoffeePotClient.png)
+
+### Test the Node.js version of the code
+
+1. Open a command prompt or terminal window on your system and change to the "**/CoffeePotClient/node/readdevicetocloudmessages**" folder under the folder where you cloned this repo.
+
+1. Open the "**ReadDeviceToCloudMessages.cs" code file in the editor of your choice (Like Visual Studio Code), and locate the following line of code near the top of the file.
+
+    ```js
+    var connectionString = 'paste-your-coffeeclient-connection-string-here';
+    ```
+1. Replace the `paste-your-coffeeclient-connection-string-here` place holder with the "**coffeeclient**" connection string that was created during the `prepareMarsIoTHub.sh` script execution previously.  For example, using the `coffeeclient` connection string for the `marsiotsea` iot hub above, we would change it to:
+
+    ```js
+     var connectionString = 'HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=coffeeclient;SharedAccessKey=SB4pL2sYG95iXFOlYOtYO23sIQieKtk/7jiU1X5T4ng=';
+    ```
+
+1. Back in your command prompt or terminal window, ensure that you are in the "**./CoffeeClient/node/readdevicetocloudmessages**" folder and install the required Node.js modules by running:
+
+    ```bash
+    npm install
+    ```
+
+1. Finally, run the "**ReadDeviceToCloudMessages.js**" program by running:
+
+    | **Note**: The program won't do anything until we send a message later.  Just keep it running in this terminal window for now.
+
+    ```bash
+    node .\ReadDeviceToCloudMessages.js
+    ```
+
+1. Keeping the command prompt or terminal window with the "**ReadDeviceToCloudMessages.js**" program running in it openopen a second terminal window or command prompt window and navigate to the "**./CoffeeClient/node/sendcloudtodevicemessage**" folder.
+
+1. Open the "**./CoffeeClient/node/sendcloudtodevicemessage/SendCloudToDeviceMessage.js**" file in your editor, and locate the following line of code:
+
+    ```js
+    var connectionString = 'paste-your-coffeeclient-connection-string-here';
+    ```
+
+1. As before, replace the `paste-your-coffeeclient-connection-string-here` place holder with your `coffeeclient` connection string.  Again using our `marsiotsea` `coffeeclient` connection string as an example:
+
+    ```js
+    var connectionString = 'HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=coffeeclient;SharedAccessKey=SB4pL2sYG95iXFOlYOtYO23sIQieKtk/7jiU1X5T4ng=';
+    ```
+1. Back in your command prompt or terminal window, change into the "**./CoffeeClient/node/sendcloudtodevicemessage**" folder, and install the Node.js dependencies with:
+
+    ```bash
+    npm install
+    ```
+1. Make sure the CoffeePotDevice UWP app is running and "**entangled**" with your `coffeepot` device as documented above.
+
+1. In the Command prompt or terminal window pointing at the "**./CoffeeClient/node/sendcloudtodevicemessage**" folder, run the "**SendCloudToDeviceMessage.js**" program by running the following:
+
+    | **Note**:  The program only sends a single message.  To send another you need to exit the program with a **Ctrl-C** and run it again.
+
+    ```bash
+    node .\SendCloudToDeviceMessage.js
+    ```
+1. You can monitor the sent message the the **CoffeePotDevice** app as well as in the terminal window with the "**ReadDeviceToCloudMessages.js**" program running.
+
+    ![Run Node Coffee Client](images/RunNodeCoffeeClient.png)
 
 ---
 
