@@ -39,7 +39,7 @@ For this to all work you need to create the following items in ***your*** azure 
 - An Azure IoT Hub
 - A "coffeeclient" SAS Policy in the hub with "ServiceConnect" permissions that the attendees will use to connect to your hub.
 - A "coffeepot" device identity that the CoffeePotDevice app will connect as
-- A "teamxx" consumer group on the "events" endpoint for "team01"-"team20" that the attendess will use to listen for messages coming back from the CoffeePotDevice simulated app.
+- A "teamxx" consumer group on the "events" endpoint for "team01"-"team20" that the attendees will use to listen for messages coming back from the CoffeePotDevice simulated app.
 
 To help you in this effort, a Bash shell script that uses the "Azure CLI 2.0" cross platform cli has been created to provision all of the required resources. Use these steps to run the script using the Azure Cloud Shell:
 
@@ -80,7 +80,7 @@ To help you in this effort, a Bash shell script that uses the "Azure CLI 2.0" cr
     > **Note**: Use the full path to the script as given below, or if you are sure the "**Azure Cloud Shell**" terminal is currently in the `~/clouddrive/missionmars/` directory and when you can run the `./prepareMarsIoTHub.sh` path to run the script, just make sure to include the `./` prefix so that the bash Cloud Shell can locate it properly.
 
     ```bash
-    ~/clouddrive/missionmars/prepareMarsIoTHub.sh -g <resourece-group-name> -n <iot-hub-name> -l <location>
+    ~/clouddrive/missionmars/prepareMarsIoTHub.sh -g <resource-group-name> -n <iot-hub-name> -l <location>
     ```
 
     For example using the names we chose above:
@@ -143,7 +143,7 @@ To help you in this effort, a Bash shell script that uses the "Azure CLI 2.0" cr
 You will need to capture a few details from the resources you provisioned above.
 
 - The "iothubowner" connection string for your own use in the CoffeePotDevice app
-- the "coffeecleint" connection string for attendees to use in the lab.
+- the "coffeeclient" connection string for attendees to use in the lab.
 - The "cofeepot" device id.  It should be "coffeepot" but you need to confirm it.
 
 1. If you accidentally cleared the output from the step above, you can retrieve the details of the resources you provisioned above using the `~/clouddrive/missionmars/showMarsIoTHub.sh` script in the "**Azure Cloud Shell**".  Just make sure to use the same resource group name and iot hub name as above:
@@ -247,7 +247,7 @@ You will need to capture a few details from the resources you provisioned above.
 
     ![Full Screen Toggle](images/FullScreenToggle.png)
 
-1. Leave the app up and running througout the event so attendees can see their messages pop up. The app has to be in the foreground to run and have the sounds associated with the messages be heard.
+1. Leave the app up and running throughout the event so attendees can see their messages pop up. The app has to be in the foreground to run and have the sounds associated with the messages be heard.
 
 ---
 
@@ -283,7 +283,7 @@ The "**Device Explorer**" app from the Azure-IoT SDK provides an convenient set 
 
     ![Ping Coffee Pot](images/DeviceExplorerPingCoffeePot.png)
 
-1. Back on the CoffeePotDevice app, you should see your ping message on the screen, as well as it's response.  In addition, you should have heard a distinctive "Ping" sound when the app recieved the message:
+1. Back on the CoffeePotDevice app, you should see your ping message on the screen, as well as it's response.  In addition, you should have heard a distinctive "Ping" sound when the app received the message:
 
     > **Note**:  ***IF YOU DID NOT HEAR THE SOUND*** ensure that the CoffeePotDevice app was visible on the screen when you sent the message from the "Device Explorer"
 
@@ -311,7 +311,7 @@ The "**Device Explorer**" app from the Azure-IoT SDK provides an convenient set 
 
     ![Oops in App](images/OopsMessageInApp.png)
 
-1. How about a command that doesn't meet the JSON format expected  byt he CoffeePotDevice app:
+1. How about a command that doesn't meet the JSON format expected by the CoffeePotDevice app:
 
     ```json
     Oops
@@ -331,11 +331,11 @@ The "**Device Explorer**" app from the Azure-IoT SDK provides an convenient set 
 
 ## Testing with the supplied .net or node.js CoffeeClient code
 
-This repo contains working versions of the .NET and Node.js code attendees create to recieve device to cloud messages and send cloud to device messages.  The code to create a device as well as for the simulated device is not supplied here because it isn't used for the coffee pot portion of the lab.
+This repo contains working versions of the .NET and Node.js code attendees create to receive device to cloud messages and send cloud to device messages.  The code to create a device as well as for the simulated device is not supplied here because it isn't used for the coffee pot portion of the lab.
 
 ### Test the .NET version of the code
 
-1. From the directory where this repo was cloned, open the ./CoffeeClient/net/CoffeeClient.sln solution in Visual Studio 2015 Community edition or later.
+1. From the directory where this repo was cloned, open the ./CoffeeClient/net/CoffeePotClient.sln solution in Visual Studio 2015 Community edition or later.
 
 1. In the "**Solution Explorer**" window, expand the "**ReadDeviceToCloudMessages**" project, and then select the "**ReadDeviceToCloudMessages.cs**" to open it in the editor.  
 
@@ -351,7 +351,7 @@ This repo contains working versions of the .NET and Node.js code attendees creat
     static string connectionString = "HostName=marsiotsea.azure-devices.net;SharedAccessKeyName=coffeeclient;SharedAccessKey=1EmQKhYMBdamoriZZM7JNcWSUoEngRlypAdX4Eghc7E=";
     ```
 
-1. Repeate the process for "**SendCloudToDevice**" project's "**SendCloudToDevice.cs**" code file, by updating the line at the top of the `SendCloudToDevice` class that reads:
+1. Repeat the process for "**SendCloudToDevice**" project's "**SendCloudToDevice.cs**" code file, by updating the line at the top of the `SendCloudToDevice` class that reads:
 
     ```c#
     static string connectionString = "paste-your-coffeeclient-connection-string-here";
@@ -375,7 +375,7 @@ This repo contains working versions of the .NET and Node.js code attendees creat
 
     ![Muultiple Startup Projects](/images/MultipleStartUpProjects.png)
 
-1. Finally, In the "**Soloution Explorer**", right-click on the "**CoffeePotClient**" solution and select "**Rebuild Solution**" from the pop-up menu to rebuild the solution.  Then click the "**Start**" button on the debug toolbar to launch the programs.
+1. Finally, In the "**Solution Explorer**", right-click on the "**CoffeePotClient**" solution and select "**Rebuild Solution**" from the pop-up menu to rebuild the solution.  Then click the "**Start**" button on the debug toolbar to launch the programs.
 
     ![Rebuild and Debug Solution](images/RebuildAndDebugCoffeeClient.png)
 
@@ -425,7 +425,7 @@ This repo contains working versions of the .NET and Node.js code attendees creat
 
 
 
-1. Keeping the command prompt or terminal window with the "**ReadDeviceToCloudMessages.js**" program running in it openopen a second terminal window or command prompt window and navigate to the "**./CoffeeClient/node/sendcloudtodevicemessage**" folder.
+1. Keeping the command prompt or terminal window with the "**ReadDeviceToCloudMessages.js**" program running in it, open a second terminal window or command prompt window and navigate to the "**./CoffeeClient/node/sendcloudtodevicemessage**" folder.
 
 1. Open the "**./CoffeeClient/node/sendcloudtodevicemessage/SendCloudToDeviceMessage.js**" file in your editor, and locate the following line of code:
 
